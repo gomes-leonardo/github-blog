@@ -1,7 +1,10 @@
+import PostInfo from './PostInfo'
 
 const Post = () => {
   return (
-    <div>Post</div>
+    <div>
+      <PostInfo />
+    </div>
   )
 }
 
