@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faArrowUpRightFromSquare,
@@ -14,35 +15,13 @@ import {
 } from './styles'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
 import SearchForm from './components/SearchForm'
-import { api } from '../../../lib/axios'
-import { useEffect, useState } from 'react'
-
-interface ProfileProps {
-  avatar_url: string
-  bio: string
-  followers: string
-  login: string
-  company: string
-  name: string
-}
+import { useContext } from 'react'
+import { ApiContext } from '../../../contexts/ApiContext'
+import { useFormatFollowers } from '../../../hooks/useFormatFollowers'
+import { useFormatLastUpdated } from '../../../hooks/useFormatLastUpdate'
 
 const Profile = () => {
-  const [user, setUser] = useState<ProfileProps | null>(null)
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await api.get(`/users/gomes-leonardo`)
-        setUser(response.data)
-      } catch (error) {
-        console.log('Error fetching data:', error)
-      }
-    }
-
-    fetchData()
-  }, [])
-
-  console.log(user)
+  const { repo, user } = useContext(ApiContext)
 
   return (
     <div>
@@ -80,7 +59,8 @@ const Profile = () => {
             </footer>
             <footer>
               <a style={{ cursor: 'auto' }}>
-                <FontAwesomeIcon icon={faUser} /> {user?.followers}
+                <FontAwesomeIcon icon={faUser} />{' '}
+                {useFormatFollowers(Number(user?.followers))}
               </a>
             </footer>
           </FooterContainer>
@@ -89,19 +69,19 @@ const Profile = () => {
       <SearchFormContainer>
         <SearchForm />
       </SearchFormContainer>
+
       <CardContainer>
-        <StyledLink to={'/post/'}>
-          <Card>
-            <div>
-              <h1>JavaScript data types and </h1>
-              <span>Há 1 dia</span>
-            </div>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut
-              libero ducimus molestias?
-            </p>
-          </Card>
-        </StyledLink>
+        {repo?.map((repo, index) => (
+          <StyledLink key={index} to={'/post/'}>
+            <Card>
+              <div>
+                <h1>{repo.name}</h1>
+                <span>{useFormatLastUpdated(repo.updated_at)}</span>
+              </div>
+              <p>{repo.description}</p>
+            </Card>
+          </StyledLink>
+        ))}
       </CardContainer>
     </div>
   )

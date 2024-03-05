@@ -84,10 +84,9 @@ export const SearchFormContainer = styled.div`
 export const CardContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
+  gap: 0.8rem;
   width: 864px;
   margin: 18rem auto;
-
   z-index: 999;
   position: absolute;
   left: 0;
@@ -101,6 +100,7 @@ export const Card = styled.div`
   border: 2.5px solid transparent;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
+  min-height: 160px;
 
   &:hover {
     border: 2.5px solid ${(props) => props.theme['base-border']};

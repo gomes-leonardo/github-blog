@@ -30,3 +30,12 @@ export const TitleSearchForm = styled.div`
     color: ${(props) => props.theme['base-span']};
   }
 `
+
+export const Button = styled.button`
+  cursor: pointer;
+  background-color: unset;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`
